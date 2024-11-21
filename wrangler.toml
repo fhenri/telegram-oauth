@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "telegram-bot"
+name = "telegram-oauth"
 main = "src/index.ts"
 compatibility_date = "2024-11-12"
 compatibility_flags = ["nodejs_compat"]
@@ -22,8 +22,20 @@ enabled = true
 # - https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 # Note: Use secrets to store sensitive data.
 # - https://developers.cloudflare.com/workers/configuration/secrets/
-# [vars]
-# MY_VARIABLE = "production_value"
+[vars]
+BOT_INFO = """{
+	"id": 8024401022,
+	"is_bot": true,
+	"first_name": "gmeet",
+	"username": "gm33tBot",
+	"can_join_groups": true,
+	"can_read_all_group_messages": false,
+	"supports_inline_queries": false,
+	"can_connect_to_business": false,
+	"has_main_web_app": false
+}"""
+GOOGLE_CLIENT_ID="461878147901-am3gteal2ebut6uhobh13v90kdv2c08d.apps.googleusercontent.com"
+OAUTH_REDIRECT_URI="https://telegram-oauth.frederic-henri.workers.dev/api/auth/callback/google"
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#workers-ai
@@ -74,9 +86,24 @@ enabled = true
 
 # Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#kv-namespaces
-# [[kv_namespaces]]
-# binding = "MY_KV_NAMESPACE"
-# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+# kv_namespaces = [
+#   { binding = "<OAUTH_STATES>", id = "<d76858a4fd6145838d6ea1405b4fa9f7>" },
+#   { binding = "<OAUTH_TOKEN>", id = "<e59d8821aeb84854b9868aeffcdc73e7>" }
+# ]
+# Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
+# Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#kv-namespaces
+# kv_namespaces = [
+#   { binding = "<OAUTH_STATES>", id = "<d76858a4fd6145838d6ea1405b4fa9f7>" },
+#   { binding = "<OAUTH_TOKEN>", id = "<e59d8821aeb84854b9868aeffcdc73e7>" }
+# ]
+
+[[kv_namespaces]]
+binding = "OAUTH_STATES"
+id = "d76858a4fd6145838d6ea1405b4fa9f7"
+
+[[kv_namespaces]]
+binding = "OAUTH_TOKEN"
+id = "e59d8821aeb84854b9868aeffcdc73e7"
 
 # Bind an mTLS certificate. Use to present a client certificate when communicating with another service.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#mtls-certificates

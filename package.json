@@ -1,5 +1,5 @@
 {
-  "name": "telegram-bot",
+  "name": "telegram-oauth",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -15,5 +15,9 @@
     "typescript": "^5.5.2",
     "vitest": "2.0.5",
     "wrangler": "^3.60.3"
+  },
+  "dependencies": {
+    "@googleapis/calendar": "^9.7.9",
+    "grammy": "^1.32.0"
   }
 }
