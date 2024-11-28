@@ -57,7 +57,6 @@ export default {
 		});
 
 		if (request.url.includes('/api/auth/callback/google')) {
-			console.log('getting google response');
 			const url = new URL(request.url);
 			const code = url.searchParams.get('code');
 			const state = url.searchParams.get('state');
@@ -93,7 +92,9 @@ export default {
 			const tokenData = await tokenResponse.json();
 
 			// Store the token in a token KV
-			await env.OAUTH_TOKEN.put(chatId, JSON.stringify(tokenData));
+			await env.OAUTH_TOKEN.put(chatId, JSON.stringify(tokenData), {
+				expirationTtl: 300,
+			});
 
 			await bot.api.sendMessage(chatId, 'Successfully authenticated! You can now use the bot.');
 			return new Response('Authentication successful! You can close this window.');
